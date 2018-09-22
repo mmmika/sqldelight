@@ -1,0 +1,21 @@
+apply plugin: 'org.jetbrains.kotlin.multiplatform'
+apply plugin: 'com.squareup.sqldelight'
+
+archivesBaseName = 'sample-common'
+
+sqldelight {
+  packageName = "com.example.sqldelight.hockey"
+}
+
+kotlin {
+  sourceSets {
+    commonMain {
+      dependencies {
+        implementation 'org.jetbrains.kotlin:kotlin-stdlib'
+      }
+    }
+  }
+  targets {
+    fromPreset(presets.jvm, 'jvm')
+  }
+}

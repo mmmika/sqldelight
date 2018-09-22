@@ -12,6 +12,9 @@ buildscript {
     maven {
       url 'https://jitpack.io'
     }
+    maven {
+      url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
   }
 
   dependencies {
@@ -28,6 +31,7 @@ buildscript {
 }
 
 apply from: "$rootDir/gradle/updateDependencies.gradle"
+apply from: "$rootDir/gradle/dependencies.gradle"
 
 allprojects {
   repositories {
@@ -36,6 +40,9 @@ allprojects {
     jcenter()
     maven {
       url 'http://dl.bintray.com/kotlin/kotlin-eap'
+    }
+    maven {
+      url 'https://oss.sonatype.org/content/repositories/snapshots/'
     }
   }
 

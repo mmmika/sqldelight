@@ -1,8 +1,5 @@
-apply from: '../gradle/dependencies.gradle'
-
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.squareup.sqldelight.android'
+apply plugin: 'org.jetbrains.kotlin.multiplatform'
 
 android {
   compileSdkVersion versions.compileSdk
@@ -13,7 +10,10 @@ android {
   }
 
   lintOptions {
-    textOutput 'stdout'
+    // TODO: Reenable when this is no longer a multiplatform module or lint fixes to work with
+    // kotlin multiplatform
+    tasks.lint.enabled = false
+    // textOutput 'stdout'
   }
 
   defaultConfig {
@@ -46,8 +46,24 @@ android {
 dependencies {
   implementation deps.kotlin.stdlib.jdk
   // TODO implementation deps.androidx.sqliteFramework
-  implementation 'android.arch.persistence:db-framework:1.1.0'
+  implementation 'androidx.sqlite:sqlite:2.0.0-rc01'
 
   implementation "com.android.support:recyclerview-v7:27.1.1"
-  implementation "com.squareup.sqldelight:android-driver:${versions.sqldelight}"
+  implementation ("com.squareup.sqldelight:android-driver:${versions.sqldelight}") {
+    exclude group: 'com.squareup.sqldelight', module: 'runtime-jdk'
+  }
+}
+
+kotlin {
+  sourceSets {
+    commonMain {
+      dependencies {
+        implementation project(':sqldelight-sample:sample-common')
+      }
+    }
+  }
+
+  targets {
+    fromPreset(presets.android, 'androidApp')
+  }
 }
